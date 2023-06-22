@@ -1,0 +1,154 @@
+@base_url = http://localhost
+
+@port = 3000
+
+@url = {{base_url}}:{{port}}
+
+@api_customer = {{url}}/customer
+@bearerTokenCustomer = Bearer {{c_login.response.body.token}}
+
+@api_admin = {{url}}/admin
+@bearerTokenAdmin = Bearer {{a_login.response.body.token}}
+
+@washing_api = {{url}}/washing_machines
+
+@history_api = {{url}}/history
+###
+GET {{api_customer}}/getcustomer HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+
+###
+GET {{api_customer}}/getcustomer/1 HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+
+###
+GET {{api_customer}}/getcustomerbyname HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+Content-Type: application/json
+
+{
+    "c_name": "ฟฟ"
+}
+###
+GET {{api_customer}}/getcustomerbyusername HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+###
+# @name c_login
+POST {{api_customer}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "c_username": "anupongzaas",
+    "c_password": "11111za"
+}
+
+###
+POST {{api_customer}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "c_name": "อนุพงศ์",
+    "c_username": "anupongzaas",
+    "c_password": "11111za",
+    "c_line": "donnaxxs"
+}
+###
+PUT {{api_customer}}/update HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+Content-Type: application/json
+
+{
+    "c_name": "ฟฟฟฟฟ",
+    "c_password": "11111za",
+    "c_line": "donnaxxs"
+}
+
+###
+PUT {{api_customer}}/addcoin/1 HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+Content-Type: application/json
+
+{
+    "c_coin": 100
+}
+
+// Admin
+###
+# @name a_login
+POST {{api_admin}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "a_username": "anuponga4",
+    "a_password": "11111za"
+}
+
+###
+POST {{api_admin}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "a_username": "anuponga4",
+    "a_password": "11111za"
+}
+
+// Wasching Machine
+###
+GET {{washing_api}}/getwashingmachine HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+
+###
+GET {{washing_api}}/getwashingmachine/1 HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+
+###
+POST {{washing_api}}/register HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+Content-Type: application/json
+
+{
+    "w_id": "WID01",
+    "w_brand": "PRIMUS",
+    "w_image": "",
+    "w_capacity": "15kg",
+    "w_type":"อบ",
+    "w_price": 40,
+    "w_timer": 2
+}
+
+// Wasching History
+
+###
+GET {{history_api}}/gethistoryall HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+
+###
+POST {{history_api}}/gethistorydate HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+Content-Type: application/json
+
+{
+    "date":"2023-06-19"
+}
+
+###
+POST {{history_api}}/gethistorybyname HTTP/1.1
+Authorization: {{bearerTokenAdmin}}
+Content-Type: application/json
+
+{
+    "c_name":"อนุ"
+}
+
+###
+GET {{history_api}}/gethistorybyusername HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+
+###
+POST {{history_api}}/gethistoryusernamebydate HTTP/1.1
+Authorization: {{bearerTokenCustomer}}
+Content-Type: application/json
+
+{
+    "date":"2023-06-20"
+}
